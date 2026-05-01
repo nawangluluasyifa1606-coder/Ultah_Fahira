@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hai My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body {
+            background: url('https://www.dropbox.com/scl/fi/zt407sshlbnz3sp4nomq9/1775870447078.png?rlkey=j2tgbsoctcykwybs56j5i6d2z&dl=1');
+            background-size: 100%; background-position: center;
+            background-attachment: fixed;
+            height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.6); width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transition: 1s; pointer-events: none;
+        }
+        .overlay.show { opacity: 1; pointer-events: auto; }
+        .content-box { text-align: center; color: white; width: 90%; max-width: 400px; }
+        .clock { font-size: 4rem; font-weight: 600; }
+        .notif-card {
+            background: rgba(255, 255, 255, 0.95); color: #333; padding: 15px;
+            border-radius: 15px; text-align: left; margin: 30px 0; min-height: 100px;
+        }
+        .notif-header { display: flex; justify-content: space-between; font-size: 0.7rem; color: #888; margin-bottom: 5px; }
+        .notif-body strong { color: #ff4d6d; }
+        #teksAnimasi { font-size: 0.9rem; line-height: 1.4; min-height: 50px; }
+        .btn-main {
+            background: #f0f0f0; border: none; padding: 10px 20px; border-radius: 12px;
+            color: #333; font-weight: 600; cursor: pointer; display: none; margin: 10px auto 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-mulai-layar {
+            background: white; color: black; padding: 12px 25px; border-radius: 12px;
+            font-weight: bold; cursor: pointer; border: none; font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="tampilanUtama">
+        <div class="content-box">
+            <div class="clock" id="jam">00:00</div>
+            <div id="tanggal" style="margin-bottom: 20px; font-weight: 400;">Kamis, 30 April</div>
+            
+            <div class="notif-card">
+                <div class="notif-header"><span>WHATSAPP</span><span>Now</span></div>
+                <div class="notif-body">
+                    <strong>Ambassador of Nasi Uduk 🍚😋</strong>
+                    <div id="teksAnimasi"></div>
+                </div>
+            </div>
+
+            <button class="btn-main" id="btnNext" onclick="jalankanKetikan()">Pesan Selanjutnya</button>
+            <button class="btn-main" id="btnWA" onclick="kirimWA()">Kirim Pesan</button>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.dropbox.com/scl/fi/pwjlk94ite8h8gqour9s4/Selamat-ulang-tahun-Fahira.mp3?rlkey=4zs1fijezw0c9kg4s3hhwpzt9&dl=1" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const stiker = "https://www.dropbox.com/scl/fi/08dgl0n2a4i1gxzshgo1q/Stiker-2-SFILE.MOBI.gif?rlkey=zbu0sw83p5zdswwpqr4q3y5vi&dl=1";
+        const music = document.getElementById('bgMusic');
+        let stepTeks = 0;
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('jam').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+        }
+        setInterval(updateTime, 1000); updateTime();
+
+        window.onload = async function() {
+            // STEP 1
+            await Swal.fire({ title: 'Hai Bidadari! ❤️', confirmButtonText: 'OK', confirmButtonColor: '#ff4d6d' });
+            music.play().catch(() => console.log("Audio blocked"));
+
+            // STEP 2
+            const { value: ok2 } = await Swal.fire({
+                title: 'Are you feeling okay?',
+                showCancelButton: true, confirmButtonText: 'OK', cancelButtonText: 'Cancel', confirmButtonColor: '#ff4d6d'
+            });
+
+            if (ok2) {
+                await sayILoveYou();
+            } else {
+                // STEP 2B
+                await Swal.fire({ title: "I'll give you a hug. Cheer up!", imageUrl: stiker, imageWidth: 150, confirmButtonText: 'OK' });
+                // STEP 3
+                const { value: ok3 } = await Swal.fire({
+                    title: 'Are you feeling better?',
+                    showCancelButton: true, confirmButtonText: 'OK', cancelButtonText: 'Cancel', confirmButtonColor: '#ff4d6d'
+                });
+                if (ok3) {
+                    await sayILoveYou();
+                } else {
+                    await Swal.fire({ title: "I'll give you a hug. Cheer up!", imageUrl: stiker, imageWidth: 150, confirmButtonText: 'OK' });
+                    await sayILoveYou();
+                }
+            }
+
+            // STEP 4
+            await Swal.fire({ title: 'Aku mau sampein sesuatu...', confirmButtonText: 'OK', confirmButtonColor: '#ff4d6d' });
+            await Swal.fire({
+                title: 'Kepo ya?',
+                showDenyButton: true, confirmButtonText: 'BANGETT', denyButtonText: 'IYAA', confirmButtonColor: '#ff4d6d', denyButtonColor: '#ff4d6d'
+            });
+
+            // STEP 5
+            await Swal.fire({ title: 'HAHA okayy', confirmButtonText: 'Ok', confirmButtonColor: '#ff4d6d' });
+
+            // MUNCULKAN TOMBOL KLIK AKU
+            Swal.fire({
+                title: '',
+                html: '<button class="btn-mulai-layar" onclick="mulaiHalamanUtama()">Klik Aku</button>',
+                showConfirmButton: false,
+                background: 'transparent',
+                backdrop: 'rgba(0,0,0,0.8)', // PERBAIKAN: Pakai kutip di sini
+                allowOutsideClick: false
+            });
+        };
+
+        async function sayILoveYou() {
+            await Swal.fire({ title: 'I love you ❤️', confirmButtonText: 'OK', confirmButtonColor: '#ff4d6d' });
+        }
+
+        function mulaiHalamanUtama() {
+            Swal.close();
+            document.getElementById('tampilanUtama').classList.add('show');
+            jalankanKetikan();
+        }
+
+        function jalankanKetikan() {
+            document.getElementById('btnNext').style.display = "none";
+            let arrayTeks = [
+                "Met ultah ya! Maaf banget ucapannya telat, kemarin sinyal dari bumi ke hati kamu lagi kena razia satpol PP. Intinya doa aku mah standar pabrik: sehat terus, makin pinter, dan jangan sampe lupa caranya nafas. ❤️",
+                "Cieee yang udah lulus SMA! Selamat ya udah lepas dari seragam putih abu-abu, bentar lagi jadi maba yang pusing mikirin krs. Padahal pengen Hukum tapi yang ada malah PBA, BKI, MPI, PAI, IES.. itu prodi apa menu prasmanan? Wkwk. Apapun pilihannya, semoga nggak nyasar ke prodi 'Teknik Melupakan Mantan' ya! 😂",
+                "Takutnya tahun depan aku udah jadi fosil atau lupa cara ngetik, jadi aku ucapin met ultah dari sekarang buat masa depan. Pokoknya kamu harus tetep keren apapun prodinya. Happy Birthday Fahira! You are my priority (setelah nasi uduk). ❤️"
+            ];
+
+            new Typed('#teksAnimasi', {
+                strings: [arrayTeks[stepTeks]],
+                typeSpeed: 50,
+                showCursor: false,
+                onComplete: () => {
+                    stepTeks++;
+                    if (stepTeks < arrayTeks.length) {
+                        document.getElementById('btnNext').style.display = "block";
+                    } else {
+                        document.getElementById('btnWA').style.display = "block";
+                    }
+                }
+            });
+        }
+
+        function kirimWA() {
+            window.location.href = "https://wa.me/6285367099983?text=Makasih%20!%20Aku%20udah%20baca%20semuanya%20❤️";
+        }
+    </script>
+</body>
+</html>
